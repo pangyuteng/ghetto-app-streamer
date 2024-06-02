@@ -30,7 +30,7 @@ services:
     networks:
       - appstream
   app:
-    image: xfce-app
+    image: pangyuteng/docker-novnc:latest
     build:
       context: xfce
       dockerfile: Dockerfile
