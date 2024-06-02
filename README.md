@@ -4,7 +4,7 @@
 docker build -t firefox .
 docker run --rm -it -p 3000:3000 firefox bash
 
-## ref
+## ref novnc
 
 https://stackoverflow.com/questions/16296753/can-you-run-gui-applications-in-a-linux-docker-container
 https://www.server-world.info/en/note?os=Ubuntu_22.04&p=desktop&f=8
@@ -16,6 +16,12 @@ no-copy-paste? https://github.com/ConSol/docker-headless-vnc-container/issues/19
 
 https://github.com/kasmtech/noVNC/
 
+## ref reverse proxy
+
+https://serverfault.com/a/708779
+
+docker exec -it ghetto-app-streamer-flask-1 bash
+docker exec ghetto-app-streamer-nginx-1 /usr/sbin/nginx -s reload
 
 ## todos
 
@@ -30,7 +36,8 @@ https://github.com/kasmtech/noVNC/
 [x] above example already shows you how to install shit.
 
 [ ] flask/nginx to spin up docker to do reverse proxy
-[ ] deploy via k8s?
+
+[ ] deploy via k8s/swarm
 
 
 ```
