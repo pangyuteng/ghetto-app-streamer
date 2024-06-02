@@ -30,12 +30,12 @@ services:
     networks:
       - appstream
   app:
-    image: app
+    image: xfce-app
     build:
-      context: app
+      context: xfce
       dockerfile: Dockerfile
     expose:
-      - "3000"
+      - "8080"
     networks:
       - appstream
 networks:

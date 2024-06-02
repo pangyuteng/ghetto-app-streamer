@@ -23,6 +23,11 @@ https://serverfault.com/a/708779
 docker exec -it ghetto-app-streamer-flask-1 bash
 docker exec ghetto-app-streamer-nginx-1 /usr/sbin/nginx -s reload
 
+https://datawookie.dev/blog/2021/08/websockify-novnc-behind-an-nginx-proxy
+
+https://hub.docker.com/r/x11docker/xfce
+
+
 ## todos
 
 [x] create/find-existing Dockerfile.novnc for app streamer
