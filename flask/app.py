@@ -1,7 +1,38 @@
+"""
+  upstream app {
+    server app:3000;
+  }
+location /app {
+    proxy_pass http://app;
+}
+"""
+
+NGINX_TEMPLATE="""
+events {}
+
+http {  
+  upstream serv {
+    server flask:5000;
+  }
+  server {
+    listen 80;
+    location / {
+      proxy_pass http://serv;
+    }
+  }
+
+}
+"""
+import os
 import subprocess
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
+
+NGINX_PATH = "/share/nginx.conf"
+if not os.path.exists(NGINX_PATH):
+    with open(NGINX_PATH,'w') as f:
+        f.write(NGINX_TEMPLATE)
 
 @app.route('/')
 def hello():
