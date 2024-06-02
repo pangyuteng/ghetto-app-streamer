@@ -7,9 +7,15 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 <body>
-    <button hx-post="/clicked" hx-swap="outerHTML" hx-target="#click-response">
+    <button hx-post="/clicked" hx-swap="innerHTML" hx-target="#click-response">
         docker ps
     </button>
+    <button hx-post="/reload-nginx" hx-swap="innerHTML" hx-target="#click-response">
+        reload-nginx
+    </button>
+    <div>
+    response:
     <div id="click-response"></div>
+    </div>
 </body>
 </html>
