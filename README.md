@@ -53,7 +53,7 @@ https://github.com/novnc/noVNC/wiki/Proxying-with-nginx
 
 [ ] add custom 
 
-docker run -d --network= --expose=8080 --name=ok-123 pangyuteng/docker-novnc:latest
+docker run -d --network=ghetto-app-streamer_appstream --expose=8080 --name=ok-123 pangyuteng/docker-novnc:latest
 
 
 ```

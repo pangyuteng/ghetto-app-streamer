@@ -7,8 +7,8 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 <body>
-    <button hx-post="/clicked" hx-swap="innerHTML" hx-target="#click-response">
-        docker ps
+    <button hx-post="/add-novnc" hx-swap="innerHTML" hx-target="#click-response">
+        add-novnc
     </button>
     <button hx-post="/reload-nginx" hx-swap="innerHTML" hx-target="#click-response">
         reload-nginx
@@ -18,8 +18,10 @@
     <div id="click-response"></div>
     </div>
     <div>
-    <a href="http://192.168.68.135/novnc/app1/vnc.html?resize=remote&path=novnc/app1/websockify">app1</a><br>
-    <a href="http://192.168.68.135/novnc/app2/vnc.html?resize=remote&path=novnc/app2/websockify">app2</a><br>
+    {% for item in container_list %}
+    <a href="http://192.168.68.135/novnc/{{item.container_name}}/vnc.html?resize=remote&path=novnc/{{item.container_name}}/websockify">ok-123</a><br>
+    {% endfor %}
+    
     </div>
 </body>
 </html>
