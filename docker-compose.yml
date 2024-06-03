@@ -29,10 +29,12 @@ services:
     restart: always
     networks:
       - appstream
-  app:
+  mynovnc:
     image: pangyuteng/docker-novnc:latest
+    deploy:
+      replicas: 0
     build:
-      context: xfce
+      context: mynovnc
       dockerfile: Dockerfile
     expose:
       - "8080"

@@ -47,9 +47,12 @@ https://github.com/novnc/noVNC/wiki/Proxying-with-nginx
 
 [x] above example already shows you how to install shit.
 
-[ ] flask/nginx to spin up docker to do reverse proxy
+[x] flask/nginx to spin up docker to do reverse proxy
 
-[ ] deploy via k8s/swarm
+[x] deploy via k8s/swarm
 
+[ ] add custom 
+
+docker run --network --expose 8080 -d
 
 ```
