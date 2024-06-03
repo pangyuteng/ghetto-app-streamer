@@ -26,8 +26,14 @@ docker exec ghetto-app-streamer-nginx-1 /usr/sbin/nginx -s reload
 
 https://datawookie.dev/blog/2021/08/websockify-novnc-behind-an-nginx-proxy
 
+above not fucking working for me, why...
+FFFF F because broswer caches!!!@#!@#!!!
 
 https://fhlipzero.io/blogs/6_noVNC/noVNC.html
+
+https://github.com/novnc/noVNC/issues/1550
+https://github.com/novnc/noVNC/wiki/Proxying-with-nginx
+
 
 ## todos
 
