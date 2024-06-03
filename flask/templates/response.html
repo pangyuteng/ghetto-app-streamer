@@ -1,0 +1,15 @@
+<pre>
+{{ docker_ps }}
+</pre>
+<pre>
+{{ nginx_reload }}
+</pre>
+<pre>
+{% for err in err_list %}
+{{ err }}<br>
+{% endfor %}
+</pre>
+<hr>
+{% for _, item in container_dict.items() %}
+<a target="_blank" href="http://192.168.68.135/novnc/{{item.container_name}}/vnc.html?resize=remote&path=novnc/{{item.container_name}}/websockify">id: {{item.ID}} name: {{item.container_name}}</a><br>
+{% endfor %}

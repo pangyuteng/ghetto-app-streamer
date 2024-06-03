@@ -51,9 +51,10 @@ https://github.com/novnc/noVNC/wiki/Proxying-with-nginx
 
 [x] deploy via k8s/swarm
 
-[ ] add custom 
+[x] self serve add-novnc
 
-docker run -d --network=ghetto-app-streamer_appstream --expose=8080 --name=ok-123 pangyuteng/docker-novnc:latest
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 
 
 ```

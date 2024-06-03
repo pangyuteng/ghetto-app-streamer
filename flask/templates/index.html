@@ -5,23 +5,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
 </head>
 <body>
-    <button hx-post="/add-novnc" hx-swap="innerHTML" hx-target="#click-response">
-        add-novnc
-    </button>
-    <button hx-post="/reload-nginx" hx-swap="innerHTML" hx-target="#click-response">
-        reload-nginx
-    </button>
+    <div hx-get="/status" hx-trigger="load" hx-swap="innerHTML" hx-target="#response">
+    </div>
+    <form hx-post="/add-novnc" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+    <input type="text" name="username" placeholder="enter username" required><br>
+    <button type="submit">add-no-vnc</button>
+    </form>
+    <form hx-post="/delete-novnc" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+    <input type="text" name="username" placeholder="enter username" required><br>
+    <button type="submit">delete-no-vnc</button>
+    </form>
     <div>
     response:
-    <div id="click-response"></div>
-    </div>
-    <div>
-    {% for item in container_list %}
-    <a href="http://192.168.68.135/novnc/{{item.container_name}}/vnc.html?resize=remote&path=novnc/{{item.container_name}}/websockify">ok-123</a><br>
-    {% endfor %}
-    
+    <div id="response"></div>
     </div>
 </body>
 </html>
