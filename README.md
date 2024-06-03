@@ -1,8 +1,32 @@
-# ghetto-app-streamer
+# self-serve-ghetto-app-stream
 
 
-docker build -t firefox .
-docker run --rm -it -p 3000:3000 firefox bash
+![](static/screenshot.png)
+
+Above screenshot shows the current state of this 1-day project. Flask app (Left) lets user run or remove containers.  Via http links, user can access individual container via novnc (Middle and Right) in the browser.
+
+tech-stack: novnc,x11vnc,docker,nginx,flask
+
+disclaimer: this is an investigational excercise, a proof-of-concept, a sorta partially working project, you should really try out `Kasm Workspace`, `AWS Appstream` or the likes before venturing to the diy route...
+
+## todos
+
+[x] create/find-existing Dockerfile.novnc for app streamer
+
+    + play 4k youtube video in browser to test frame rate
+    + can copy paste, key-combo-shortcuts
+
+    use below for streaming desktop
+    https://github.com/linuxserver/docker-baseimage-kasmvnc
+
+[x] above example already shows you how to install shit.
+
+[x] flask/nginx to spin up docker to do reverse proxy
+
+[x] deploy via k8s/swarm
+
+[x] self serve add-novnc
+
 
 ## ref novnc
 
@@ -34,27 +58,7 @@ https://fhlipzero.io/blogs/6_noVNC/noVNC.html
 https://github.com/novnc/noVNC/issues/1550
 https://github.com/novnc/noVNC/wiki/Proxying-with-nginx
 
-
-## todos
-
-[x] create/find-existing Dockerfile.novnc for app streamer
-
-    + play 4k youtube video in browser to test frame rate
-    + can copy paste, key-combo-shortcuts
-
-    use below for streaming desktop
-    https://github.com/linuxserver/docker-baseimage-kasmvnc
-
-[x] above example already shows you how to install shit.
-
-[x] flask/nginx to spin up docker to do reverse proxy
-
-[x] deploy via k8s/swarm
-
-[x] self serve add-novnc
-
+```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
-
-
 ```
