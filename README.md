@@ -53,6 +53,7 @@ https://github.com/novnc/noVNC/wiki/Proxying-with-nginx
 
 [ ] add custom 
 
-docker run --network --expose 8080 -d
+docker run -d --network= --expose=8080 --name=ok-123 pangyuteng/docker-novnc:latest
+
 
 ```

@@ -25,7 +25,6 @@ services:
       - ${PWD}/share/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - flask
-      - app
     restart: always
     networks:
       - appstream
@@ -33,9 +32,6 @@ services:
     image: pangyuteng/docker-novnc:latest
     deploy:
       replicas: 0
-    build:
-      context: mynovnc
-      dockerfile: Dockerfile
     expose:
       - "8080"
     networks:
