@@ -82,9 +82,9 @@ def get_container_dict():
         raise ValueError(err)
     return container_dict
     
-def start_container(username):
+def start_container(username,image_path):
     container_name = f'novnc-{username}'
-    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream --expose=8080 --name={container_name} pangyuteng/docker-novnc:latest'.split(' ')
+    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e IMAGE_PATH={image_path} --expose=8080 --name={container_name} novnc-itksnap'.split(' ')
     app.logger.info(cmd_list)
     process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
@@ -92,7 +92,6 @@ def start_container(username):
     err = err.decode("utf-8")
     if len(err) > 0:
         raise ValueError(err)
-
 
 def remove_container(username):
     container_name = f'novnc-{username}'
@@ -142,10 +141,11 @@ def add_novnc():
     try:
         app.logger.info("add_novnc...")
         username = request.get_json().get('username',None)
+        image_path = request.get_json().get('image_path',None)
         if username is None:
             username = str(uuid.uuid4()).split('-')[-1]
 
-        start_container(username)
+        start_container(username,image_path)
         
         container_dict = get_container_dict()
 
