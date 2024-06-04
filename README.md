@@ -3,7 +3,8 @@
 
 ![](static/screenshot.png)
 
-Above screenshot shows the current state of this 1-day project. Flask app (Left) lets user run or remove containers.  Via http links, user can access individual container via novnc (Middle and Right) in the browser.
+Above screenshot shows the current state of this investigationl project.
+Flask app (Left) lets user run or remove containers.  Via http links, user can access individual container via novnc (right upper and lower) in the browser, front end parameters can be passed to container via environment variables.
 
 tech-stack: novnc,x11vnc,docker,nginx,flask
 
@@ -25,7 +26,9 @@ disclaimer: this is an investigational excercise, a proof-of-concept, a sorta pa
 
 [x] deploy via k8s/swarm
 
-[x] self serve add-novnc
+[x] self serve create and remove novnc-app
+
+[x] updated container to launch itk with environment variable to load image path specified from flask.
 
 ## main references
 
