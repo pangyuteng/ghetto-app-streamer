@@ -1,12 +1,7 @@
 <pre>
-{{ docker_ps }}
-</pre>
-<pre>
-{{ nginx_reload }}
-</pre>
-<pre>
-{% for err in err_list %}
-{{ err }}<br>
+err:<br>
+{% for item in err_list %}
+{{ item }}<br>
 {% endfor %}
 </pre>
 <hr>

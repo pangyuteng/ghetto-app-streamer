@@ -30,6 +30,8 @@ http {
 """
 
 import os
+import time
+import hashlib
 import traceback
 import subprocess
 import uuid
@@ -60,7 +62,7 @@ def get_container_dict():
             continue
         item = json.loads(item)
         container_name = item.get("Names")
-        if container_name.startswith("novnc-"):
+        if container_name.startswith(CONTAINER_PREFIX):
             item = dict(item)
             item["container_name"]=container_name
             app.logger.info(str(item))
@@ -81,10 +83,21 @@ def get_container_dict():
     if len(err) > 0:
         raise ValueError(err)
     return container_dict
-    
+
+DOCKER_CONTAINER_NAME = "novnc-itksnap"
+CONTAINER_PREFIX = "novnc-"
+def get_container_name(username):
+    m = hashlib.sha256()
+    m.update(username.encode("utf-8"))
+    return f'{CONTAINER_PREFIX}{m.digest().hex()[:8]}'
+
+def container_exists(username):
+    container_name = get_container_name(username)
+    return container_name in get_container_dict().keys()
+
 def start_container(username,image_path):
-    container_name = f'novnc-{username}'
-    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e IMAGE_PATH={image_path} --expose=8080 --name={container_name} novnc-itksnap'.split(' ')
+    container_name = get_container_name(username)
+    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e IMAGE_PATH={image_path} --expose=8080 --name={container_name} {DOCKER_CONTAINER_NAME}'.split(' ')
     app.logger.info(cmd_list)
     process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
@@ -94,7 +107,7 @@ def start_container(username,image_path):
         raise ValueError(err)
 
 def remove_container(username):
-    container_name = f'novnc-{username}'
+    container_name = get_container_name(username)
     cmd_list = f'docker stop {container_name}'.split(' ')
     app.logger.info(cmd_list)
     process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -112,7 +125,6 @@ def remove_container(username):
     if len(err) > 0:
         raise ValueError(err)
 
-
 with open(NGINX_PATH,'w') as f:
     content = Environment().from_string(NGINX_TEMPLATE).render(container_dict=get_container_dict())
     f.write(content)
@@ -121,6 +133,21 @@ with open(NGINX_PATH,'w') as f:
 def hello():
     app.logger.info("home...")
     return render_template("index.html")
+
+@app.route('/itksnap')
+def itksnap():
+    username = request.args.get('username',None)
+    image_path = request.args.get('image_path',None)
+    err_list = []
+    try:
+        if container_exists(username):
+            remove_container(username)
+            time.sleep(1)
+        container_dict = get_container_dict()
+        start_container(username,image_path)
+    except:
+        err_list.append(traceback.format_exc())
+    return render_template("itksnap.html",username=username,image_path=image_path,err_list=err_list)
 
 @app.route('/status',methods=["GET"])
 def status():
@@ -143,7 +170,9 @@ def add_novnc():
         username = request.get_json().get('username',None)
         image_path = request.get_json().get('image_path',None)
         if username is None:
-            username = str(uuid.uuid4()).split('-')[-1]
+            raise ValueError("username not specified!")
+        if container_exists(username):
+            raise ValueError("container found, please delete container first!")
 
         start_container(username,image_path)
         
