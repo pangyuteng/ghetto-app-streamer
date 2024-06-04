@@ -9,7 +9,7 @@ http {
     location / {
       proxy_pass http://flask:5000/;
     }
-    {% for _,item in container_dict.items() %}
+    {% for _,item in containers_dict.items() %}
     location /novnc/{{item.container_name}}/ {
       proxy_pass http://{{item.container_name}}:8080/;
       proxy_buffering off;
@@ -36,6 +36,7 @@ import traceback
 import subprocess
 import uuid
 import json
+import requests
 from flask import Flask, render_template, jsonify, request
 from jinja2 import Environment
 
@@ -43,9 +44,9 @@ app = Flask(__name__)
 
 NGINX_PATH = "/share/nginx.conf"
 
-def get_container_dict():
+def get_containers_dict():
     
-    container_dict = {}
+    containers_dict = {}
 
     cmd_list = f'docker ps --format json'.split(' ')
     app.logger.info(cmd_list)
@@ -65,11 +66,12 @@ def get_container_dict():
         if container_name.startswith(CONTAINER_PREFIX):
             item = dict(item)
             item["container_name"]=container_name
+            item["url"]= f"novnc/{container_name}/vnc.html?resize=remote&path=novnc/{container_name}/websockify"
             app.logger.info(str(item))
-            container_dict[container_name]=item
+            containers_dict[container_name]=item
 
     with open(NGINX_PATH,'w') as f:
-        content = Environment().from_string(NGINX_TEMPLATE).render(container_dict=container_dict)
+        content = Environment().from_string(NGINX_TEMPLATE).render(containers_dict=containers_dict)
         f.write(content)
 
     cmd_list = 'docker exec ghetto-app-streamer-nginx-1 /usr/sbin/nginx -s reload'.split(' ')
@@ -82,7 +84,7 @@ def get_container_dict():
         err = ""
     if len(err) > 0:
         raise ValueError(err)
-    return container_dict
+    return containers_dict
 
 DOCKER_CONTAINER_NAME = "novnc-itksnap"
 CONTAINER_PREFIX = "novnc-"
@@ -93,7 +95,7 @@ def get_container_name(username):
 
 def container_exists(username):
     container_name = get_container_name(username)
-    return container_name in get_container_dict().keys()
+    return container_name in get_containers_dict().keys()
 
 def start_container(username,image_path):
     container_name = get_container_name(username)
@@ -126,7 +128,7 @@ def remove_container(username):
         raise ValueError(err)
 
 with open(NGINX_PATH,'w') as f:
-    content = Environment().from_string(NGINX_TEMPLATE).render(container_dict=get_container_dict())
+    content = Environment().from_string(NGINX_TEMPLATE).render(containers_dict=get_containers_dict())
     f.write(content)
 
 @app.route('/')
@@ -139,28 +141,50 @@ def itksnap():
     username = request.args.get('username',None)
     image_path = request.args.get('image_path',None)
     err_list = []
+    container_info = None
     try:
+        if username is None or image_path is None:
+            raise ValueError("missing username or image_path params!")
         if container_exists(username):
             remove_container(username)
-            time.sleep(1)
-        container_dict = get_container_dict()
+            #time.sleep(1)
         start_container(username,image_path)
+        #time.sleep(1)
+        containers_dict = get_containers_dict()
+        container_name = get_container_name(username)
+        container_info = containers_dict[container_name]
+        """
+        status_code = 'pending'
+        counter = 0
+        while status_code == "pending" or counter < 3:
+            res = requests.get(container_info["url"])
+            status = res.status_code
+            time.sleep(1)
+            counter+=1
+        if status_code != 200:
+            raise ValueError("trouble loading novnc?")
+        """
     except:
         err_list.append(traceback.format_exc())
-    return render_template("itksnap.html",username=username,image_path=image_path,err_list=err_list)
+
+    return render_template("itksnap.html",
+        container_info=container_info,
+        username=username,
+        image_path=image_path,
+        err_list=err_list)
 
 @app.route('/status',methods=["GET"])
 def status():
     app.logger.info("status...")
     err_list = []
     try:
-        container_dict = get_container_dict()
+        containers_dict = get_containers_dict()
         return render_template("response.html",
-            container_dict=container_dict,
+            containers_dict=containers_dict,
         )
     except:
         err_list.append(traceback.format_exc())
-        return render_template("response.html",err_list=err_list,container_dict={})
+        return render_template("response.html",err_list=err_list,containers_dict={})
 
 @app.route('/add-novnc',methods=["POST"])
 def add_novnc():
@@ -176,15 +200,15 @@ def add_novnc():
 
         start_container(username,image_path)
         
-        container_dict = get_container_dict()
+        containers_dict = get_containers_dict()
 
         return render_template("response.html",
-            container_dict=container_dict,
+            containers_dict=containers_dict,
             err_list=err_list,
         )
     except:
         err_list.append(traceback.format_exc())
-        return render_template("response.html",err_list=err_list,container_dict={})
+        return render_template("response.html",err_list=err_list,containers_dict={})
 
 @app.route('/delete-novnc',methods=["POST"])
 def delete_novnc():
@@ -196,12 +220,12 @@ def delete_novnc():
             raise ValueError("username is None")
 
         remove_container(username)
-        container_dict = get_container_dict()
+        containers_dict = get_containers_dict()
         return render_template("response.html",
-            container_dict=container_dict,
+            containers_dict=containers_dict,
             err_list=err_list,
         )
         return render_template("response.html",err_list=err_list)
     except:
         err_list.append(traceback.format_exc())
-        return render_template("response.html",err_list=err_list,container_dict={})
+        return render_template("response.html",err_list=err_list,containers_dict={})

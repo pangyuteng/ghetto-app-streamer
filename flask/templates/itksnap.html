@@ -1,0 +1,10 @@
+username:{{username}},image_path:{{image_path}}<br>
+{{container_info.url}}<br>
+{% if container_info %}
+<hr>
+<embed src="{{ container_info.url | safe }}" style="width:1024px; height: 768px;">
+{% endif %}
+<hr>
+{% for item in err_list %}
+{{ item }}<br>
+{% endfor %}

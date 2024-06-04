@@ -5,6 +5,6 @@ err:<br>
 {% endfor %}
 </pre>
 <hr>
-{% for _, item in container_dict.items() %}
-<a target="_blank" href="http://192.168.68.135/novnc/{{item.container_name}}/vnc.html?resize=remote&path=novnc/{{item.container_name}}/websockify">id: {{item.ID}} name: {{item.container_name}}</a><br>
+{% for _, item in containers_dict.items() %}
+<a target="_blank" href="{{ item.url | safe}}">id: {{item.ID}} name: {{item.container_name}}</a><br>
 {% endfor %}
