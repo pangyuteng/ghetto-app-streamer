@@ -6,7 +6,8 @@
 Above screenshot shows the current state of this investigationl project.
 Flask app (Left) lets user run or remove containers.  Via http links, user can access individual container via novnc (right upper and lower) in the browser, front end parameters can be passed to container via environment variables.
 
-tech-stack: novnc,x11vnc,docker,nginx,flask
+tech-stack: novnc,x11vnc,docker,nginx,flask,htmx.
+itksnap -as demo app
 
 disclaimer: this is an investigational excercise, a proof-of-concept, a sorta partially working project, you should really try out `Kasm Workspace`, `AWS Appstream` or the likes before venturing to the diy route...
 
