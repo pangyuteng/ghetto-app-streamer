@@ -33,7 +33,7 @@ services:
     image: novnc-itksnap
     build:
       context: novnc-itksnap
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.x11vnc
     deploy:
       replicas: 0
     expose:
