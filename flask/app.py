@@ -146,10 +146,11 @@ def itksnap():
         if username is None or image_path is None:
             raise ValueError("missing username or image_path params!")
         if container_exists(username):
-            remove_container(username)
-            #time.sleep(1)
-        start_container(username,image_path)
-        #time.sleep(1)
+            #remove_container(username)
+            time.sleep(1)
+        else:
+            start_container(username,image_path)
+        time.sleep(1)
         containers_dict = get_containers_dict()
         container_name = get_container_name(username)
         container_info = containers_dict[container_name]
