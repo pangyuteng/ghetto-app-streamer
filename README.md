@@ -36,6 +36,8 @@ disclaimer: this is an investigational excercise, a proof-of-concept, a sorta pa
 https://datawookie.dev/blog/2021/08/websockify-novnc-behind-an-nginx-proxy
 
 https://github.com/theasp/docker-novnc
+https://www.youtube.com/watch?v=L4nqky8qGm8
+https://github.com/theonemule/docker-opengl-turbovnc
 
 ## notes and more references
 
