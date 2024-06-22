@@ -32,7 +32,7 @@ RUN	mkdir ~/.vnc/
 RUN	mkdir ~/.dosbox
 RUN	echo "set border 1" > ~/.ratpoisonrc  
 #RUN	echo "exec google-chrome --no-sandbox">> ~/.ratpoisonrc
-ENV WORKSPACE_PATH=/mnt/shared/workspace.itksnap
+ENV WORKSPACE_PATH=/mnt/share/workspace.itksnap
 RUN	echo "exec /opt/itksnap/bin/itksnap -w $WORKSPACE_PATH">> ~/.ratpoisonrc
 RUN	openssl req -x509 -nodes -newkey rsa:2048 -keyout ~/novnc.pem -out ~/novnc.pem -days 3650 -subj "/C=US/ST=NY/L=NY/O=NY/OU=NY/CN=NY emailAddress=email@example.com"
 

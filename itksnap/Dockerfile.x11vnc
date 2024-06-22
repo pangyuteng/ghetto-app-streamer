@@ -27,7 +27,8 @@ ENV HOME=/root \
     DISPLAY_HEIGHT=768 \
     RUN_XTERM=yes \
     RUN_FLUXBOX=yes \
-    RUN_ITKSNAP=yes
+    RUN_ITKSNAP=yes \
+    WORKSPACE_PATH=/tmp/ok
 
 COPY . /app
 

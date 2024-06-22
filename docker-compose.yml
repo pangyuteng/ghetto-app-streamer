@@ -28,7 +28,7 @@ services:
     restart: always
     networks:
       - appstream
-  mynovnc:
+  itksnap:
     image: itksnap
     build:
       context: itksnap

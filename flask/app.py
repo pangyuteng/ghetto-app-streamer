@@ -86,8 +86,8 @@ def get_containers_dict():
         raise ValueError(err)
     return containers_dict
 
-DOCKER_CONTAINER_NAME = "novnc-itksnap"
-CONTAINER_PREFIX = "novnc-"
+DOCKER_CONTAINER_NAME = "itksnap"
+CONTAINER_PREFIX = "itksnap-"
 def get_container_name(username):
     m = hashlib.sha256()
     m.update(username.encode("utf-8"))
@@ -97,9 +97,9 @@ def container_exists(username):
     container_name = get_container_name(username)
     return container_name in get_containers_dict().keys()
 
-def start_container(username,image_path):
+def start_container(username,workspace_path):
     container_name = get_container_name(username)
-    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e IMAGE_PATH={image_path} --expose=8888 --name={container_name} {DOCKER_CONTAINER_NAME}'.split(' ')
+    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e WORKSPACE_PATH={workspace_path} --expose=8888 --name={container_name} {DOCKER_CONTAINER_NAME}'.split(' ')
     app.logger.info(cmd_list)
     process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
@@ -139,17 +139,17 @@ def hello():
 @app.route('/itksnap')
 def itksnap():
     username = request.args.get('username',None)
-    image_path = request.args.get('image_path',None)
+    workspace_path = request.args.get('workspace_path',None)
     err_list = []
     container_info = None
     try:
-        if username is None or image_path is None:
-            raise ValueError("missing username or image_path params!")
+        if username is None or workspace_path is None:
+            raise ValueError("missing username or workspace_path params!")
         if container_exists(username):
             #remove_container(username)
             time.sleep(1)
         else:
-            start_container(username,image_path)
+            start_container(username,workspace_path)
         time.sleep(1)
         containers_dict = get_containers_dict()
         container_name = get_container_name(username)
@@ -171,7 +171,7 @@ def itksnap():
     return render_template("itksnap.html",
         container_info=container_info,
         username=username,
-        image_path=image_path,
+        workspace_path=workspace_path,
         err_list=err_list)
 
 @app.route('/status',methods=["GET"])
@@ -187,19 +187,19 @@ def status():
         err_list.append(traceback.format_exc())
         return render_template("response.html",err_list=err_list,containers_dict={})
 
-@app.route('/add-novnc',methods=["POST"])
-def add_novnc():
+@app.route('/add-itksnap',methods=["POST"])
+def add_itksnap():
     err_list = []
     try:
-        app.logger.info("add_novnc...")
+        app.logger.info("add_itksnap...")
         username = request.get_json().get('username',None)
-        image_path = request.get_json().get('image_path',None)
+        workspace_path = request.get_json().get('workspace_path',None)
         if username is None:
             raise ValueError("username not specified!")
         if container_exists(username):
             raise ValueError("container found, please delete container first!")
 
-        start_container(username,image_path)
+        start_container(username,workspace_path)
         
         containers_dict = get_containers_dict()
 
@@ -211,11 +211,11 @@ def add_novnc():
         err_list.append(traceback.format_exc())
         return render_template("response.html",err_list=err_list,containers_dict={})
 
-@app.route('/delete-novnc',methods=["POST"])
-def delete_novnc():
+@app.route('/delete-itksnap',methods=["POST"])
+def delete_itksnap():
     err_list = []
     try:
-        app.logger.info("delete-novnc...")
+        app.logger.info("delete-itksnap...")
         username = request.get_json().get('username',None)
         if username is None:
             raise ValueError("username is None")
