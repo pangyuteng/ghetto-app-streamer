@@ -8,9 +8,11 @@ RUN	echo "tzdata tzdata/Zones/America select New York" >> ~/tx.txt
 RUN	debconf-set-selections ~/tx.txt 
 RUN	apt-get update && apt-get install -y \
     gnupg apt-transport-https wget software-properties-common \
-    vim curl tar \
+    vim curl tar python3-pip python3 \
     ratpoison novnc websockify libxv1 libglu1-mesa xauth x11-utils xorg tightvncserver \
     qt6-qpa-plugins '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+
+RUN pip3 install vncdotool --break-system-packages
 
 RUN	wget -q -O- https://packagecloud.io/dcommander/virtualgl/gpgkey | gpg --dearmor >/etc/apt/trusted.gpg.d/VirtualGL.gpg 
 RUN	wget -q -O- https://packagecloud.io/dcommander/turbovnc/gpgkey |  gpg --dearmor >/etc/apt/trusted.gpg.d/TurboVNC.gpg 
@@ -21,6 +23,7 @@ RUN     mv VirtualGL.list  /etc/apt/sources.list.d/VirtualGL.list
 RUN	apt-get update && apt-get install virtualgl turbovnc -y
 #RUN	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 #RUN	apt install -y ./google-chrome-stable_current_amd64.deb
+
 RUN mkdir /opt/itksnap
 COPY itksnap-4.2.0-20240422-Linux-gcc64.tar.gz /tmp
 RUN tar -xf /tmp/itksnap-4.2.0-20240422-Linux-gcc64.tar.gz -C /opt/itksnap --strip-components=1

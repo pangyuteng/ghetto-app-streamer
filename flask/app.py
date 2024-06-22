@@ -136,6 +136,16 @@ def hello():
     app.logger.info("home...")
     return render_template("index.html")
 
+@app.route('/keypress')
+def keypress():
+    username = request.args.get('username',None)
+    keyargs = request.args.get('keyargs',None)
+
+    container_name = get_container_name(username)
+
+    cmd_list = f'docker exec {container_name} python keypress.py keyargs'.split(' ')
+
+
 @app.route('/itksnap')
 def itksnap():
     username = request.args.get('username',None)
@@ -230,3 +240,6 @@ def delete_itksnap():
     except:
         err_list.append(traceback.format_exc())
         return render_template("response.html",err_list=err_list,containers_dict={})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=5000,debug=True)
