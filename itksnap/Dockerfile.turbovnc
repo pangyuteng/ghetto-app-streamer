@@ -32,17 +32,15 @@ RUN	mkdir ~/.vnc/
 RUN	mkdir ~/.dosbox
 RUN	echo "set border 1" > ~/.ratpoisonrc  
 #RUN	echo "exec google-chrome --no-sandbox">> ~/.ratpoisonrc
-RUN	echo "exec /opt/itksnap/bin/itksnap">> ~/.ratpoisonrc
+ENV WORKSPACE_PATH=/mnt/shared/workspace.itksnap
+RUN	echo "exec /opt/itksnap/bin/itksnap -w $WORKSPACE_PATH">> ~/.ratpoisonrc
 RUN	openssl req -x509 -nodes -newkey rsa:2048 -keyout ~/novnc.pem -out ~/novnc.pem -days 3650 -subj "/C=US/ST=NY/L=NY/O=NY/OU=NY/CN=NY emailAddress=email@example.com"
 
 #RUN	echo $PASSWORD | vncpasswd -f > ~/.vnc/passwd
 #RUN	chmod 0600 ~/.vnc/passwd 
 
-#ENV QT_QPA_PLATFORM=offscreen
-#ENV DISPLAY=:1
 ENV QT_DEBUG_PLUGINS=1
-EXPOSE 80
 #CMD /opt/TurboVNC/bin/vncserver && \
 CMD /opt/TurboVNC/bin/vncserver -SecurityTypes None && \
-    websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 80 localhost:5901 && \
+    websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 8888 localhost:5901 && \
     tail -f /dev/null

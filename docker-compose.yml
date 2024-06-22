@@ -29,15 +29,14 @@ services:
     networks:
       - appstream
   mynovnc:
-    #image: pangyuteng/docker-novnc:latest
-    image: novnc-itksnap
+    image: itksnap
     build:
-      context: novnc-itksnap
-      dockerfile: Dockerfile.x11vnc
+      context: itksnap
+      dockerfile: Dockerfile.turbovnc
     deploy:
       replicas: 0
     expose:
-      - "8080"
+      - "8888"
     networks:
       - appstream
 networks:

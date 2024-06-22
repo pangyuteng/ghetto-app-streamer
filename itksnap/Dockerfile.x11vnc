@@ -35,4 +35,4 @@ RUN mkdir -p /root/.itksnap.org/ITK-SNAP
 COPY UserPreferences.xml /root/.itksnap.org/ITK-SNAP/UserPreferences.xml
 
 CMD ["/app/entrypoint.sh"]
-EXPOSE 8080
+EXPOSE 8888

@@ -11,11 +11,11 @@ http {
     }
     {% for _,item in containers_dict.items() %}
     location /novnc/{{item.container_name}}/ {
-      proxy_pass http://{{item.container_name}}:8080/;
+      proxy_pass http://{{item.container_name}}:8888/;
       proxy_buffering off;
     }
     location /novnc/{{item.container_name}}/websockify {
-      proxy_pass http://{{item.container_name}}:8080/;
+      proxy_pass http://{{item.container_name}}:8888/;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "Upgrade";
@@ -99,7 +99,7 @@ def container_exists(username):
 
 def start_container(username,image_path):
     container_name = get_container_name(username)
-    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e IMAGE_PATH={image_path} --expose=8080 --name={container_name} {DOCKER_CONTAINER_NAME}'.split(' ')
+    cmd_list = f'docker run -d --network=ghetto-app-streamer_appstream -v /mnt/hd1/github/ghetto-app-streamer/share:/mnt/share -e IMAGE_PATH={image_path} --expose=8888 --name={container_name} {DOCKER_CONTAINER_NAME}'.split(' ')
     app.logger.info(cmd_list)
     process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
