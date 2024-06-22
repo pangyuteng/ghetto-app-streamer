@@ -67,7 +67,7 @@ def get_containers_dict():
         if container_name.startswith(CONTAINER_PREFIX):
             item = dict(item)
             item["container_name"]=container_name
-            item["url"]= f"novnc/{container_name}/vnc.html?resize=remote&path=novnc/{container_name}/websockify"
+            item["url"]= f"novnc/{container_name}/vnc.html?autoconnect=true&resize=remote&path=novnc/{container_name}/websockify"
             app.logger.info(str(item))
             containers_dict[container_name]=item
 

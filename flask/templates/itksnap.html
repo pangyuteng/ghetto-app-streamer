@@ -48,18 +48,18 @@ DISCLAIMER: FOR RESEARCH AND DEVELOPMENT USE ONLY
             <input type="text" name="container_name" value="{{container_name}}" hidden><br>
             <button class="expand" title="persists edited segmentation to db." type="submit">save-and-push</button>
         </form>
-        <form hx-post="/approve-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+        <form hx-post="/approve-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc" hx-confirm="Are you sure you wish to approve?">
             <input type="text" name="action" value="approve" hidden><br>
             <button class="expand" type="submit" 
                 title="lock segmentation in db (disables when local nifi is stale, >5 secs old)." 
                 disabled>approve
             </button>
         </form>
-        <form hx-post="/delete-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+        <form hx-post="/delete-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc" hx-confirm="Are you sure you wish to delete?">
             <input type="text" name="action" value="delete" hidden><br>
             <button class="expand" type="submit" title="deletes the persists segmentation in db." disabled>delete</button>
         </form>
-        <form hx-post="/restart-itksnap" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+        <form hx-post="/restart-itksnap" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc" hx-confirm="Are you sure you wish to restart itksnap?">
             <input type="text" name="action" value="delete" hidden><br>
             <button class="expand" type="submit" title="restart itksnap." >restart-itksnap</button>
         </form>
@@ -75,17 +75,19 @@ DISCLAIMER: FOR RESEARCH AND DEVELOPMENT USE ONLY
     </div>
     
     <div class="itksnap">
-        {% if container_info %}
         <embed src="{{ container_info.url | safe }}" style="position:relative;height:90vh;width:90vw;border:none;">
-        {% endif %}
-        <!--
-            style="width:1024px; height: 768px; 
-            position:absolute;height:100%;width:100%;border:none
-        -->
     </div>
 
 </div>
 </div>
-
+HOLA
+<script>
+window.addEventListener('beforeunload', function (e) {
+    // Cancel the event
+    e.preventDefault();
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+});
+</script>
 </body>
 </html>
