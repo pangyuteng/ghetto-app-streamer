@@ -25,28 +25,53 @@
     height: 90vh;
     width: 90vw;
 }
+.expand {
+    width: 100%;
+}
 </style>
 </head>
 <body>
 
-...
+DISCLAIMER: FOR RESEARCH AND DEVELOPMENT USE ONLY
 <div class="main">
 <div class="flex">
     <div class="tool">
         username:{{username}},workspace_path:{{workspace_path}}<br>
         {{container_info.url}}<br>
-
-        <form hx-post="/keypress" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+        <hr>
+        <br><br><br>
+        <form hx-post="/save-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+            <label class="expand" for="username">username:</label>
+            <select class="expand" id="username" name="username">
+                <option value=""{{username}}>{{username}}</option>
+            </select>
             <input type="text" name="container_name" value="{{container_name}}" hidden><br>
-            <input type="text" name="key_args" value="ctrl-s" hidden><br>
-            <button type="submit">save</button>
+            <button class="expand" title="persists edited segmentation to db." type="submit">save-and-push</button>
         </form>
-        <div id="response">
-        </div>
+        <form hx-post="/approve-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+            <input type="text" name="action" value="approve" hidden><br>
+            <button class="expand" type="submit" 
+                title="lock segmentation in db (disables when local nifi is stale, >5 secs old)." 
+                disabled>approve
+            </button>
+        </form>
+        <form hx-post="/delete-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+            <input type="text" name="action" value="delete" hidden><br>
+            <button class="expand" type="submit" title="deletes the persists segmentation in db." disabled>delete</button>
+        </form>
+        <form hx-post="/restart-itksnap" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
+            <input type="text" name="action" value="delete" hidden><br>
+            <button class="expand" type="submit" title="restart itksnap." >restart-itksnap</button>
+        </form>
+        <br>
+        <hr>
+        response:
+        <textarea id="response" type="text" class="expand" readonly=true rows=10>
+        </textarea>
         {% for item in err_list %}
         {{ item }}<br>
         {% endfor %}
-        
+        <hr>
     </div>
     
     <div class="itksnap">
