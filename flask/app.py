@@ -132,19 +132,28 @@ with open(NGINX_PATH,'w') as f:
     f.write(content)
 
 @app.route('/')
-def hello():
+def index():
     app.logger.info("home...")
     return render_template("index.html")
 
-@app.route('/keypress')
+@app.route('/fff')
+def fff():
+    return render_template("fff.html")
+
+@app.route('/keypress',methods=["POST"])
 def keypress():
-    username = request.args.get('username',None)
-    keyargs = request.args.get('keyargs',None)
-
-    container_name = get_container_name(username)
-
-    cmd_list = f'docker exec {container_name} python keypress.py keyargs'.split(' ')
-
+    try:
+        container_name = request.get_json().get('container_name')
+        key_args = request.get_json().get('key_args')
+        cmd_list = f'docker exec {container_name} vncdo -v --server=localhost::5901 key {key_args}'.split(' ')
+        app.logger.info(cmd_list)
+        process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = process.communicate()
+        app.logger.info(str(out.decode("utf-8")))
+        app.logger.info(str(err.decode("utf-8")))
+        return jsonify("success"),200
+    except:
+        return jsonify(traceback.format_exc()),500
 
 @app.route('/itksnap')
 def itksnap():
@@ -179,6 +188,7 @@ def itksnap():
         err_list.append(traceback.format_exc())
 
     return render_template("itksnap.html",
+        container_name=container_name,
         container_info=container_info,
         username=username,
         workspace_path=workspace_path,

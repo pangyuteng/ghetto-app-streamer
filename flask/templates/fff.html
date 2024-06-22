@@ -15,12 +15,13 @@
     display: flex;
 }
 .tool {
-    background-color: rgb(10, 10, 10);
+    background-color: rgb(48, 202, 18);
     float: left;
     height: 90vh;
     width: 10vw;
 }
 .itksnap {
+    background-color: rgb(170, 60, 13);
     float: left;
     height: 90vh;
     width: 90vw;
@@ -33,32 +34,9 @@
 <div class="main">
 <div class="flex">
     <div class="tool">
-        username:{{username}},workspace_path:{{workspace_path}}<br>
-        {{container_info.url}}<br>
-
-        <form hx-post="/keypress" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
-            <input type="text" name="container_name" value="{{container_name}}" hidden><br>
-            <input type="text" name="key_args" value="ctrl-s" hidden><br>
-            <button type="submit">save</button>
-        </form>
-        <div id="response">
-        </div>
-        {% for item in err_list %}
-        {{ item }}<br>
-        {% endfor %}
-        
-    </div>
-    
+    </div>    
     <div class="itksnap">
-        {% if container_info %}
-        <embed src="{{ container_info.url | safe }}" style="position:relative;height:90vh;width:90vw;border:none;">
-        {% endif %}
-        <!--
-            style="width:1024px; height: 768px; 
-            position:absolute;height:100%;width:100%;border:none
-        -->
     </div>
-
 </div>
 </div>
 
