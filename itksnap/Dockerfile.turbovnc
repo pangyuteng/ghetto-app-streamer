@@ -30,6 +30,7 @@ RUN tar -xf /tmp/itksnap-4.2.0-20240422-Linux-gcc64.tar.gz -C /opt/itksnap --str
 
 RUN mkdir -p /root/.itksnap.org/ITK-SNAP
 COPY UserPreferences.xml /root/.itksnap.org/ITK-SNAP/UserPreferences.xml
+COPY --chmod=777 restart_itksnap.sh /root
 
 #RUN	apt-get update && apt-get install -y supervisor fluxbox xterm
 

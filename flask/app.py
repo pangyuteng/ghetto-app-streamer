@@ -37,11 +37,13 @@ import datetime
 import subprocess
 import uuid
 import json
+import logging
 import requests
 from flask import Flask, render_template, jsonify, request
 from jinja2 import Environment
 
 app = Flask(__name__)
+app.logger.setLevel(logging.INFO)
 
 NGINX_PATH = "/share/nginx.conf"
 
@@ -152,7 +154,21 @@ def delete_segmentation():
 @app.route('/restart-itksnap',methods=["POST"])
 def restart_itksnap():
     tstamp = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S.%f')
-    return jsonify({"state":"NotImplementedError","tstamp":tstamp}),200
+    try:
+        tstamp = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S.%f')
+        container_name = request.get_json().get('container_name')
+        username = request.get_json().get('username')
+        cmd_list = f'docker exec {container_name} bash -c /root/restart_itksnap.sh'.split(' ')
+        app.logger.info("restart_itksnap")
+        app.logger.info(cmd_list)
+        process = subprocess.Popen(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = process.communicate()
+        app.logger.info(str(out.decode("utf-8")))
+        app.logger.info(str(err.decode("utf-8")))
+        return jsonify({"state":"restart-success","tstamp":tstamp,"username":username}),200
+    except:
+        return jsonify(traceback.format_exc()),500
+
 @app.route('/save-segmentation',methods=["POST"])
 def save_segmentation():
     try:
@@ -166,7 +182,7 @@ def save_segmentation():
         out, err = process.communicate()
         app.logger.info(str(out.decode("utf-8")))
         app.logger.info(str(err.decode("utf-8")))
-        return jsonify({"state":"success","tstamp":tstamp,"username":username}),200
+        return jsonify({"state":"save-success","tstamp":tstamp,"username":username}),200
     except:
         return jsonify(traceback.format_exc()),500
 
