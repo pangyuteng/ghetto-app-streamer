@@ -29,11 +29,10 @@ services:
     networks:
       - appstream
   itksnap:
-    image: x11vnc
-    # image: itksnap
-    # build:
-    #   context: itksnap
-    #   dockerfile: Dockerfile.turbovnc
+    image: itksnap
+    build:
+      context: itksnap
+      dockerfile: Dockerfile.turbovnc
     deploy:
       replicas: 0
     expose:
