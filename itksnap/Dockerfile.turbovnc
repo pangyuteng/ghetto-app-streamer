@@ -31,14 +31,14 @@ RUN ln -s /opt/itksnap/bin/itksnap /usr/bin/itksnap
 RUN mkdir -p /root/.itksnap.org/ITK-SNAP
 COPY UserPreferences.xml /root/.itksnap.org/ITK-SNAP/UserPreferences.xml
 
-RUN	apt-get update && apt-get install -y supervisor fluxbox xterm
+#RUN	apt-get update && apt-get install -y supervisor fluxbox xterm
 
 RUN	mkdir ~/.vnc/
 RUN	mkdir ~/.dosbox
-#RUN	echo "set border 1" > ~/.ratpoisonrc  
+RUN	echo "set border 1" > ~/.ratpoisonrc  
 #RUN	echo "exec google-chrome --no-sandbox">> ~/.ratpoisonrc
 #ENV WORKSPACE_PATH=/mnt/share/workspace.itksnap
-#RUN	echo "exec /opt/itksnap/bin/itksnap -w $WORKSPACE_PATH">> ~/.ratpoisonrc
+RUN	echo "exec /opt/itksnap/bin/itksnap -w $WORKSPACE_PATH">> ~/.ratpoisonrc
 RUN	openssl req -x509 -nodes -newkey rsa:2048 -keyout ~/novnc.pem -out ~/novnc.pem -days 3650 -subj "/C=US/ST=NY/L=NY/O=NY/OU=NY/CN=NY emailAddress=email@example.com"
 
 #RUN	echo $PASSWORD | vncpasswd -f > ~/.vnc/passwd
@@ -46,13 +46,13 @@ RUN	openssl req -x509 -nodes -newkey rsa:2048 -keyout ~/novnc.pem -out ~/novnc.p
 
 ENV QT_DEBUG_PLUGINS=1
 #CMD /opt/TurboVNC/bin/vncserver && \
-#CMD /opt/TurboVNC/bin/vncserver -SecurityTypes None && \
-#    websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 8888 localhost:5901 && \
-#    tail -f /dev/null
-
-
-COPY . /app
-COPY entrypoint.sh.turbovnc /app/entrypoint.sh
 CMD /opt/TurboVNC/bin/vncserver -SecurityTypes None && \
-websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 80 localhost:5901 && \
-/app/entrypoint.sh
+   websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 8888 localhost:5901 && \
+   tail -f /dev/null
+
+# COPY . /app
+# RUN mv /app/conf.d/itksnap.conf.WS /app/conf.d/itksnap.conf
+# COPY entrypoint.sh.turbovnc /app/entrypoint.sh
+# CMD /opt/TurboVNC/bin/vncserver -SecurityTypes None && \
+# websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 80 localhost:5901 && \
+# /app/entrypoint.sh

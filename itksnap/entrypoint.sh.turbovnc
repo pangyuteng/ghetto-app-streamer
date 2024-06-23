@@ -1,4 +1,9 @@
 #!/bin/bash
 set -ex
 
+rm -rf /app/conf.d/websockify.conf
+rm -rf /app/conf.d/x11vnc.conf
+rm -rf /app/conf.d/xvfb.conf
+rm -rf /app/conf.d/fluxbox.conf
+
 exec supervisord -c /app/supervisord.conf
