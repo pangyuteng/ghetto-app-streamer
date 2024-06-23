@@ -175,6 +175,7 @@ def itksnap():
     username = request.args.get('username',None)
     workspace_path = request.args.get('workspace_path',None)
     err_list = []
+    container_name = None
     container_info = None
     try:
         if username is None or workspace_path is None:

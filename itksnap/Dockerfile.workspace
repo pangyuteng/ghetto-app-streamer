@@ -1,7 +1,0 @@
-
-FROM pangyuteng/theonemule-turbovnc:latest
-RUN	echo "set border 1" > ~/.ratpoisonrc && \
-    echo "exec /opt/itksnap/bin/itksnap -w /mnt/scratch/tmp/test-itksnap/workspace.itksnap">> ~/.ratpoisonrc
-CMD /opt/TurboVNC/bin/vncserver -SecurityTypes None && \
-    websockify -D --web=/usr/share/novnc/ --cert=~/novnc.pem 80 localhost:5901 && \
-    tail -f /dev/null

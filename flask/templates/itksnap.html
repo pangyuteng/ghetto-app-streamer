@@ -28,6 +28,15 @@
 .expand {
     width: 100%;
 }
+.block {
+    z-index: 10;
+    background-color: rgba(255, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5vh;
+    width: 100vw;
+}
 </style>
 </head>
 <body>
@@ -35,6 +44,9 @@
 DISCLAIMER: FOR RESEARCH AND DEVELOPMENT USE ONLY
 <div class="main">
 <div class="flex">
+    <div class="block">
+        DISCLAIMER: FOR RESEARCH AND DEVELOPMENT USE ONLY. SOFTWARE IS PROVIDED AS IS.
+    </div>
     <div class="tool">
         username:{{username}},workspace_path:{{workspace_path}}<br>
         {{container_info.url}}<br>

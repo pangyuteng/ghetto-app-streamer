@@ -31,6 +31,7 @@ ENV HOME=/root \
     WORKSPACE_PATH=/tmp/ok
 
 COPY . /app
+COPY entrypoint.sh.x11vnc /app/entrypoint.sh
 
 RUN mkdir -p /root/.itksnap.org/ITK-SNAP
 COPY UserPreferences.xml /root/.itksnap.org/ITK-SNAP/UserPreferences.xml
