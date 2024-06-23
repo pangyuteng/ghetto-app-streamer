@@ -55,7 +55,7 @@ DISCLAIMER: FOR RESEARCH AND DEVELOPMENT USE ONLY
         <form hx-post="/save-segmentation" hx-target="#response" hx-swap="innerHTML" hx-headers='{}' hx-ext="json-enc">
             <label class="expand" for="username">username:</label>
             <select class="expand" id="username" name="username">
-                <option value=""{{username}}>{{username}}</option>
+                <option value="{{username}}" selected>{{username}}</option>
             </select>
             <input type="text" name="container_name" value="{{container_name}}" hidden><br>
             <button class="expand" title="persists edited segmentation to db." type="submit">save-and-push</button>

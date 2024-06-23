@@ -27,7 +27,7 @@ RUN	apt-get update && apt-get install virtualgl turbovnc -y
 RUN mkdir /opt/itksnap
 COPY itksnap-4.2.0-20240422-Linux-gcc64.tar.gz /tmp
 RUN tar -xf /tmp/itksnap-4.2.0-20240422-Linux-gcc64.tar.gz -C /opt/itksnap --strip-components=1
-RUN ln -s /opt/itksnap/bin/itksnap /usr/bin/itksnap
+
 RUN mkdir -p /root/.itksnap.org/ITK-SNAP
 COPY UserPreferences.xml /root/.itksnap.org/ITK-SNAP/UserPreferences.xml
 
