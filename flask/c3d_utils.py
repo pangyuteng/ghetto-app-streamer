@@ -28,7 +28,7 @@ def get_series_dict(dcm_file):
         raise ValueError("unable to determine SeriesID since SeriesNumber is scrubbed.")
     
     # dicom-series-list actually searches for available series in folder of input dicom file.
-    # thuse we look for a match based on SeriesNumber
+    # thus we look for a match based on SeriesNumber
     mydict = None
     lines = out.split("\n")
     for row in lines[1:]:
