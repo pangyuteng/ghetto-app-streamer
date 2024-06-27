@@ -22,8 +22,10 @@ RUN     mv TurboVNC.list /etc/apt/sources.list.d/TurboVNC.list
 RUN     mv VirtualGL.list  /etc/apt/sources.list.d/VirtualGL.list
 RUN	apt-get update && apt-get install virtualgl turbovnc -y
 
-
 RUN	apt-get update && apt-get install -y mesa-utils
+COPY SuperTuxKart-1.4-linux-x86_64.tar.xz /tmp
+RUN mkdir /opt/stk
+RUN tar -xf /tmp/SuperTuxKart-1.4-linux-x86_64.tar.xz -C /opt/stk 
 #RUN	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 #RUN	apt install -y ./google-chrome-stable_current_amd64.deb
 
@@ -32,7 +34,7 @@ RUN	mkdir ~/.dosbox
 RUN	echo "set border 1" > ~/.ratpoisonrc  
 #RUN	echo "exec google-chrome --no-sandbox">> ~/.ratpoisonrc
 RUN	echo "exec glxgears">> ~/.ratpoisonrc
-
+RUN     echo "exec /opt/stk/SuperTuxKart-1.4-linux-x86_64.tar.xz/run_game.sh">> ~/.ratpoisonrc
 RUN	openssl req -x509 -nodes -newkey rsa:2048 -keyout ~/novnc.pem -out ~/novnc.pem -days 3650 -subj "/C=US/ST=NY/L=NY/O=NY/OU=NY/CN=NY emailAddress=email@example.com"
 
 ENV GALLIUM_HUD=fps

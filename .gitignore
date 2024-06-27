@@ -1,5 +1,6 @@
 __pycache__
 flask/c3d-nightly-Linux-x86_64.tar.gz
+itksnap/SuperTuxKart-1.4-linux-x86_64.tar.xz
 itksnap/itksnap-4.2.0-20240422-Linux-gcc64.tar.gz
 *.nii.gz
 share/nginx.conf
